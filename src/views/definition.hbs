@@ -38,7 +38,7 @@
         <div id="container">
             <div id="overlay">
                 {{#each inputs}}
-                <div>
+                <div style= align-self: Center;>
                   <label for="{{id}}">{{name}}</label>
                   {{#number}}
                   <input type="number" id="{{../id}}" value="{{value}}">
@@ -149,7 +149,14 @@ function init() {
     // add a directional light
     const directionalLight = new THREE.DirectionalLight( 0xffffff )
     directionalLight.intensity = 2
+    directionalLight.position.set(0,15,50)
     scene.add( directionalLight )
+
+    const directionalLight2 = new THREE.DirectionalLight( 0xffffff )
+    directionalLight2.intensity = 2
+    directionalLight2.position.set(0,-15,-50)
+    scene.add( directionalLight2 )
+ 
 
     const ambientLight = new THREE.AmbientLight()
     scene.add( ambientLight )
@@ -218,6 +225,9 @@ function collectResults(responseJson) {
           const rhinoObject = decodeItem(branch[j])
           if (rhinoObject !== null) {
             doc.objects().add(rhinoObject, null)
+            //console.log(rhinoObject.userStringCount)
+            //console.log(rhinoObject.getUserStrings())
+
           }
         }
       }
