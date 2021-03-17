@@ -39,7 +39,6 @@ let rhino, doc
 rhino3dm().then(async m => {
     console.log('Loaded rhino3dm.')
     rhino = m // global
-    compute()
     init()
     rndPts()
 
@@ -111,7 +110,6 @@ function onChange() {
 
 }
 
-compute()
 
 
 /**
