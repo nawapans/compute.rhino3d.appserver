@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link rel="icon" href="data:,">
+    <title>LEAF Luna Enhancement and Agricultural Farming</title>
+    <div>
+        <h2 style="color: black;">Luna Enhancement and Agricultural Farming | Application for Locating and Form Simulation</h2>
+    </div>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', sans-serif;
+            font-size: .7rem;
+            text-align: center;
+            font-style: normal;
+            color: aliceblue;
+            align-self: center;
+        }
+        
+        canvas {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 1);
+        }
+        
+        input[type=range] {
+            width: 100%;
+            color: rgb(68, 175, 112)
+        }
+        
+        #container {
+            position: relative;
+        }
+        
+        #container canvas,
+        #overlay {
+            position: absolute;
+        }
+        
+        #overlay {
+            z-index: 1;
+            width: 20vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 1);
+        }
+        
+        #overlay div {
+            padding: 5px;
+        }
+        
+        #loader {
+            border: 5px solid #4fabd6;
+            /* Light grey */
+            border-top: 5px solid #000000;
+            /* Grey */
+            border-radius: 100%;
+            width: 15px;
+            height: 15px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 70%;
+            z-index: 2;
+        }
+        
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loader"></div>
+    <div id="container">
+        <div id="overlay">
+            <div>
+                <h3><strong>Move Coordinate and Run Geometry</strong></h3>
+
+            </div>
+            <div>
+                <label for="RH_IN:X coordinate">X coordinate</label>
+                <input type="range" id="RH_IN:X coordinate" name="RH_IN:X coordinate" min="10" max="90" value="50" step="2">
+
+            </div>
+            <div>
+                <label for="RH_IN:Y coordinate">Y coordinate</label>
+                <input type="range" id="RH_IN:Y coordinate" name="RH_IN:Y coordinate" min="10" max="90" value="50" step="2">
+
+            </div>
+            <div>
+                <label for="RH_IN:Rotation Variation">Rotation Variation</label>
+                <input type="range" id="RH_IN:Rotation Variation" name="RH_IN:Rotation Variation" min="0" max="6" value="1" step="1">
+
+            </div>
+            <div>
+                <label for="RH_IN:Generate Inflated Inner Shell">Turn On Inner Shell</label>
+                <input type="range" id="RH_IN:Generate Inflated Inner Shell" name="RH_IN:Generate Inflated Inner Shell" min="1" max="2" value="1" step="1">
+
+            </div>
+            <div>
+                <label for="RH_IN:Generate Outer Shell">Turn On Outer Shell</label>
+                <input type="range" id="RH_IN:Generate Outer Shell" name="RH_IN:Generate Outer Shell" min="1" max="2" value="1" step="1">
+
+            </div>
+            <div>
+                <label for="RH_IN:Outer Shell Roof Opening Size">Outer Shell Roof Opening Size</label>
+                <input type="range" id="RH_IN:Outer Shell Roof Opening Size" name="RH_IN:Outer Shell Roof Opening Size" min="10" max="90" value="90" step="1">
+
+            </div>
+            <div><button id="downloadButton" disabled>Download LEAF model</button></div>
+            <div><a href="LEAF.gh" download="LEAF.gh.html">Save source code</a></div>
+        </div>
+    </div>
+
+    <script type="module" src="./script.js"></script>
+</body>
+
+
+
+</html>

@@ -49,7 +49,7 @@ function rndPts() {
     const startPts = [
         { x: -5, y: 5, z: 2 },
         { x: 5, y: 5, z: 6 },
-        { x: -12, y: -8, z: 5 },
+        { x: -5, y: -5, z: 5 },
         { x: 5, y: -5, z: 1 },
     ]
     const cntPts = startPts.length
@@ -79,8 +79,8 @@ function rndPts() {
         tcontrols.showZ = true
         tcontrols.addEventListener('dragging-changed', onChange)
         scene.add(tcontrols)
-        compute()
         console.log(cntPts)
+        compute()
     }
 
 }

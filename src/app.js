@@ -8,10 +8,10 @@ const cors = require('cors')
 const app = express()
 
 // log requests to the terminal when running in a local debug setup
-if(process.env.NODE_ENV !== 'production')
-  app.use(logger('dev'))
+if (process.env.NODE_ENV !== 'production')
+    app.use(logger('dev'))
 
-app.use(express.json({limit: '10mb'}))
+app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: false }))
 app.use(cors())
 app.use(compression())
@@ -25,9 +25,9 @@ app.use(compression())
 
 const argIndex = process.argv.indexOf('--computeUrl')
 if (argIndex > -1)
-  process.env.RHINO_COMPUTE_URL = process.argv[argIndex + 1]
+    process.env.RHINO_COMPUTE_URL = process.argv[argIndex + 1]
 if (!process.env.RHINO_COMPUTE_URL)
-  process.env.RHINO_COMPUTE_URL = 'http://localhost:8081/' // default if nothing else exists
+    process.env.RHINO_COMPUTE_URL = 'http://localhost:8081/' // default if nothing else exists
 
 console.log('RHINO_COMPUTE_URL: ' + process.env.RHINO_COMPUTE_URL)
 
@@ -48,22 +48,21 @@ express.static.mime.types["wasm"] = "application/wasm";
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404))
+    next(createError(404))
 })
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  console.error(err)
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-  data = { message: err.message }
-  if (req.app.get('env') === 'development')
-  {
-    data.stack = err.stack
-  }
-  // send the error
-  res.status(err.status || 500).send(data)
+    // set locals, only providing error in development
+    res.locals.message = err.message
+    console.error(err)
+    res.locals.error = req.app.get('env') === 'development' ? err : {}
+    data = { message: err.message }
+    if (req.app.get('env') === 'development') {
+        data.stack = err.stack
+    }
+    // send the error
+    res.status(err.status || 500).send(data)
 })
 
 module.exports = app
