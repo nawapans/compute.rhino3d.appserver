@@ -137,7 +137,49 @@ function collectResults(responseJson) {
             }
         }
     }
+
+    if (doc.objects().count < 1) {
+        console.error('No rhino objects to load!')
+        showSpinner(false)
+        return
+    }
+    // load rhino doc into three.js scene
+    const buffer = new Uint8Array(doc.toByteArray()).buffer
+    loader.parse(buffer, function(object) {
+
+        // clear objects from scene
+        scene.traverse(child => {
+            if (child.userData.hasOwnProperty('objectType') && child.userData.objectType === 'File3dm') {
+                scene.remove(child)
+            }
+        })
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // color crvs
+        object.traverse(child => {
+            if (child.isLine) {
+                if (child.userData.attributes.geometry.userStringCount > 0) {
+                    //console.log(child.userData.attributes.geometry.userStrings[0][1])
+                    const col = child.userData.attributes.geometry.userStrings[0][1]
+                    const threeColor = new THREE.Color("rgb(" + col + ")")
+                    const mat = new THREE.LineBasicMaterial({ color: threeColor })
+                    child.material = mat
+                }
+            }
+        })
+
+        ///////////////////////////////////////////////////////////////////////
+        // add object graph from rhino model to three.js scene
+        scene.add(object)
+
+        // hide spinner and enable download button
+        showSpinner(false)
+            //downloadButton.disabled = false
+
+    })
 }
+
 
 function showSpinner(enable) {
     if (enable)
