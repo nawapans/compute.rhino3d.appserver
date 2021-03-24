@@ -65,8 +65,8 @@ function download() {
  * Call appserver
  */
 async function compute() {
-
-    // initialise 'data' object that will be used by compute()
+    showSpinner(true)
+        // initialise 'data' object that will be used by compute()
     const data = {
         definition: definition,
         inputs: {
@@ -77,6 +77,8 @@ async function compute() {
             'RH_IN:Generate Outer Shell': OuterShell.valueAsNumber,
             'RH_IN:Outer Shell Roof Opening Size': OuterShellOpening.valueAsNumber
         }
+
+
     }
 
     console.log(data.inputs)
@@ -93,11 +95,49 @@ async function compute() {
         if (!response.ok)
             throw new Error(response.statusText)
 
+        const responseJson = await response.json()
+        collectResults(responseJson)
+
     } catch (error) {
         console.error(error)
     }
 }
 
+/**
+ * Parse response
+ */
+function collectResults(responseJson) {
+
+    const values = responseJson.values
+
+    console.log(values)
+
+    // clear doc
+    try {
+        if (doc !== undefined)
+            doc.delete()
+    } catch {}
+
+    //console.log(values)
+    doc = new rhino.File3dm()
+
+    // for each output (RH_OUT:*)...
+    for (let i = 0; i < values.length; i++) {
+        // ...iterate through data tree structure...
+        for (const path in values[i].InnerTree) {
+            const branch = values[i].InnerTree[path]
+                // ...and for each branch...
+            for (let j = 0; j < branch.length; j++) {
+                // ...load rhino geometry into doc
+                const rhinoObject = decodeItem(branch[j])
+                if (rhinoObject !== null) {
+                    // console.log(rhinoObject)
+                    doc.objects().add(rhinoObject, null)
+                }
+            }
+        }
+    }
+}
 
 function showSpinner(enable) {
     if (enable)
@@ -106,8 +146,20 @@ function showSpinner(enable) {
         document.getElementById('loader').style.display = 'none'
 }
 
+function decodeItem(item) {
+    const data = JSON.parse(item.data)
+    if (item.type === 'System.String') {
+        // hack for draco meshes
+        try {
+            return rhino.DracoCompression.decompressBase64String(data)
+        } catch {} // ignore errors (maybe the string was just a string...)
+    } else if (typeof data === 'object') {
+        return rhino.CommonObject.decode(data)
+    }
+    return null
+}
+
 function onSliderChange() {
-    document.getElementById('loader').style.display = 'block'
 
     showSpinner(true)
     compute()
